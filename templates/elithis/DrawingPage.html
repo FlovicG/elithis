@@ -1,0 +1,23 @@
+{% extends "global/Base.html" %}
+{% load staticfiles otree_tags %}
+
+{% block title %}
+    <meta http-equiv="Refresh" content="5">
+    Tirage au sort
+{% endblock %}
+
+{% block content %}
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" align="justify" style="background-color:white;">
+                {% if lost_or_won == 'won' %}
+                    Vous avez été tiré(e) au sort!<br>
+                    Grâce aux efforts que vous avez consentis, vous permettez à EcoGeste de recevoir
+                    {{ payoff_total_en_euros }} euros.
+                {% elif lost_or_won == 'lost' %}
+                    Désolé, vous n'avez pas été tiré(e) au sort.
+                {% endif %}
+            </div>
+        </div>
+    </div>
+{% endblock %}

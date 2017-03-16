@@ -1,0 +1,161 @@
+{% extends "global/Base.html" %}
+{% load staticfiles otree_tags %}
+
+
+{% block title %}
+    Période n°{{subsession.round_number}}
+{% endblock %}
+
+
+{% block content %}
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" align="justify" style="background-color:white;">
+                <table>
+                    <tr>
+                        <td>
+                            <table id="id_bloc_ampoules">
+                            </table>
+                        </td>
+                        <td style="text-align: center;">
+                            <div id="droppable" class="ui-widget-header"></div><br>
+                            <b><span id="id_counter" text-align="center" style="color:#aaaaaa">0</span></b>
+                        </td>
+                    </tr>
+                    <tr>
+                    </tr>
+                </table>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <input type="hidden" name="nb_tasks_thisperiod" id="id_nb_tasks_thisperiod"/>
+    <p>
+        <input id="id_nextButton" class="btn btn-primary btn-large btn-primary next-button" type="submit"
+               style="visibility:visible;" value="Suivant" disabled/>
+    </p>
+    <p>
+        <input id="id_nextButton2" class="btn btn-primary btn-large btn-primary next-button" type="submit"
+               style="visibility:hidden;" value="Suivant"/>
+    </p>
+{% endblock %}
+
+
+{% block scripts %}
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <script src="{% static "elithis/jquery.ui.touch-punch.min.js" %}"></script>
+
+    <script>
+    var dropped_items = 0;
+    $("#id_nb_tasks_thisperiod").val(dropped_items);
+
+    var ampoules_width = {{Constants.c_startingPxWidth}};
+    var ampoules_width_step = ( {{Constants.c_startingPxWidth}} - {{endingPxWidth}} )
+                                / {{Constants.c_max_nb_tasks}};
+
+
+    function validateWindow(){
+        // Stop the tasks
+        $("#id_nextButton2").click();
+    }
+
+    function fillTable_and_start_timeout(){
+        // Create the 'marker' tab, that contains '0' if the cell is uninituialised and 1 if it needs to be filled with
+        // a turned-on light
+        var filled = new Array();
+        for(i=0; i<10; i++) filled[i] = new Array();
+        // Initialise the 'marker' tab
+        for(i=0; i<10; i++)
+            for(j=0; j<10; j++)
+                filled[i][j] = 0;
+        // Put first the turned-on ligths
+        for(i=0; i<{{Constants.c_max_nb_tasks}}; i++){
+            var randomI = 0;
+            var randomJ = 0;
+            do{
+                randomI = Math.floor((Math.random() * 10));
+                randomJ = Math.floor((Math.random() * 10));
+            }while(filled[randomI][randomJ] == 1);
+            filled[randomI][randomJ] = 1;
+        }
+        // Now use the marker table to fill in the tab
+        // Fill the table with the lights
+        tabBody = document.getElementById("id_bloc_ampoules");
+        // Pour chaque ligne
+        for (i=0; i<10; i++){
+            row=document.createElement("tr");
+            // Pour chaque colonne
+            for(j=0; j<10; j++){
+                cell = document.createElement("td");
+                var DOM_img = document.createElement("img");
+                DOM_img.id = "ampoule_".concat(10*i+j);
+                DOM_img.style.width = ampoules_width;
+                DOM_img.style.height = "auto";
+                if(filled[i][j]==1){
+                    DOM_img.src = "{% static "elithis/ampoule_allumée.png" %}";
+                    DOM_img.name = "ampoule_draggable";
+                    DOM_img.classList = "draggable ampoule";
+                }
+                else{
+                    DOM_img.src = "{% static "elithis/ampoule_eteinte.png" %}";
+                    DOM_img.name = "ampoule_notdraggable";
+                    DOM_img.classList = "ampoule";
+                }
+                cell.appendChild(DOM_img);
+                row.appendChild(cell);
+            }
+            tabBody.appendChild(row);
+        }
+        $('img[name=ampoule_draggable]').draggable({
+            helper:"clone",
+            });
+        // Start time_out
+        setTimeout(validateWindow, {{timer_left_in_ms}});
+    }
+
+    $(function(){
+        $("#droppable").droppable({
+        drop: function(event, ui) {
+            // Manage the dropping
+            document.getElementById(ui.draggable.attr('id')).src = "{% static "elithis/ampoule_eteinte.png" %}";
+            ui.draggable.detach().appendTo($(this));
+            // Update the dropped items
+            dropped_items ++;
+            $('#id_counter').html(dropped_items);
+            $("#id_nb_tasks_thisperiod").val(dropped_items);
+            // Enable the button if needed
+            if(dropped_items>={{Constants.c_max_nb_tasks}}){
+                $("#id_nextButton").prop('disabled', false);
+            }
+            // Lower the size of all the remaining images
+            ampoules_width -= ampoules_width_step;
+            $( "img[name*='ampoule']" ).css('width', ampoules_width);
+        }
+        });
+    });
+
+    window.onload = fillTable_and_start_timeout;
+
+    </script>
+{% endblock %}
+
+
+{% block styles %}
+    <style>
+        table{
+            table-layout: fixed;
+            width: 100%;
+        }
+        .ampoule{
+            width: {{Constants.c_startingPxWidth_ForCSS}};
+            height: auto;
+        }
+        #droppable{
+            width: 100%;
+            height: 200px;
+            padding: 10px;
+            border: 5px solid #aaaaaa;
+        }
+    </style>
+{% endblock %}

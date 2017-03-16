@@ -1,0 +1,55 @@
+{% extends "global/Base.html" %}
+{% load staticfiles otree_tags %}
+
+
+{% block title %}
+{% endblock %}
+
+
+{% block content %}
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" align="justify" style="background-color:white;">
+                <input type="hidden" name="stop_pressed" id="id_stop_pressed"/>
+                <p>
+                    <input id="id_nextButton" class="btn btn-primary btn-large btn-primary next-button" type="submit"
+                           style="visibility:visible;" value="Entamer la période suivante"/>
+                    <input id="id_exitButton" class="btn btn-primary btn-large" type="button"
+                           style="visibility:visible;" value="Aller sur Internet" onclick="return quitBox();"/>
+                </p>
+                <p>
+                    <input id="id_nextButton2" class="btn btn-primary btn-large btn-primary next-button" type="submit"
+                           style="visibility:hidden;" value="Suivant"/>
+                </p>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+
+
+{% block scripts %}
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+    <script>
+    $("#id_stop_pressed").val(0);
+
+    function quitBox(){
+        // Update the "stop_pressed" variable
+        $("#id_stop_pressed").val(1);
+        // Open a browser
+        window.open("https://www.google.com");
+        // Stop the tasks
+        $("#id_nextButton2").click();
+    }
+
+    function validateWindow(){
+        // Stop the tasks
+        $("#id_nextButton2").click();
+    }
+
+    window.onload = setTimeout(validateWindow, {{timer_left_in_ms}});
+
+    </script>
+{% endblock %}

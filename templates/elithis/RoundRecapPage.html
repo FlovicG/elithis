@@ -1,0 +1,52 @@
+{% extends "global/Base.html" %}
+{% load staticfiles otree_tags %}
+
+{% block title %}
+    Récapitulatif intermédiaire: Période n°{{subsession.round_number}}
+{% endblock %}
+
+{% block content %}
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" align="justify" style="background-color:white;">
+
+                {% if with_prime == 'NoPrime' %}
+                <p>
+                    Vous avez effectué {{player.nb_tasks_thisperiod}} tâches à cette période.
+                    Vous avez complété au total {{player.total_periodcompleted}} période(s) depuis la première période.<br>
+                    Vous avez donc gagné depuis la première période {{player.total_periodcompleted}}
+                    * {{Constants.c_gain_per_period}}  = {{player.total_gain_bonus | c}}.<br>
+                </p>
+                {% elif with_prime == 'WithPrime' %}
+                <p>
+                    Vous avez effectué {{player.nb_tasks_thisperiod}} tâches à cette période.
+                    Vous avez effectué au total {{player.total_periodcompleted}} période(s) depuis la première période.<br>
+                    Vous avez donc gagné depuis la première période {{player.total_periodcompleted}}
+                    * {{Constants.c_gain_per_period}}  = {{player.total_gain | c}}.<br>
+                    A cela s'ajoute un bonus de {{player.total_bonus | c}}.<br>
+                    Vous avez donc gagné au total {{player.total_gain | c}} + {{player.total_bonus | c}}  = {{player.total_gain_bonus | c}}<br>
+                </p>
+                {% endif %}
+                {% if with_ecogeste == 'WithEcoGeste' %}
+                <p>
+                    Grâce à vos efforts depuis la première période, l'association EcoGeste va recevoir
+                    {{player.total_ecogeste|c}}.
+                </p>
+                {% endif %}
+
+                <input id="id_nextButton" class="btn btn-primary btn-large btn-primary next-button" type="submit"
+                       style="visibility:visible;" value="Suivant"/>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block scripts %}
+    <script>
+    function validateWindow(){
+        // Stop the tasks
+        $("#id_nextButton").click();
+    }
+    window.onload = setTimeout(validateWindow, {{timer_left_in_ms}});
+    </script>
+{% endblock %}

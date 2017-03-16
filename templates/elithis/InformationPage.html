@@ -1,0 +1,166 @@
+{% extends "global/Base.html" %}
+{% load staticfiles otree_tags %}
+
+{% block title %}
+    Instructions
+{% endblock %}
+
+{% block content %}
+    <div class="container-fluid">
+        <div class="row">
+            <p class="col-lg-12 col-md-12 col-sm-12 col-xs-12" align="justify" style="background-color:white;">
+                <p><b>Instructions Générales</b></p>
+                <p>
+                    L'expérience à laquelle vous allez participer est destinée à l'étude de la prise de décision.
+                    Nous vous demandons de lire attentivement les instructions, elles doivent vous permettre de bien
+                    comprendre l'expérience. Lorsque tous les participants auront lu ces instructions un expérimentateur
+                    procédera à une relecture à voix haute.<br>
+                    Toutes vos décisions seront traitées de façon anonyme. Vous indiquerez vos choix à l'aide de
+                    l’ordinateur devant lequel vous êtes assis(e). Au cours de l'expérience vous allez accumuler des
+                    gains, exprimés en points. A la fin de l'expérience, ces gains seront convertis en euros selon un taux
+                    de conversion qui est précisé à la fin de ces instructions. Votre gain en euros vous sera versé en
+                    liquide.<br>
+                    A partir de maintenant nous vous demandons de ne plus parler. Si vous avez une question levez la
+                    main et un expérimentateur viendra vous répondre en privé.
+                </p>
+                <br>
+                <p><b>Cadre général</b></p>
+                <p>
+                    Cette expérience vous amène à réaliser des tâches sur l’écran de l’ordinateur. Une période est
+                    définie comme une page écran comportant cinquante tâches. Pour valider une période et passer à la
+                    suivante, les cinquante tâches doivent être réalisées avec succès. Chaque tâche consiste à éteindre
+                    une ampoule en la déplaçant de gauche à droite.<br>
+                    Au début d’une période, cinquante ampoules allumées apparaissent sur la gauche de votre écran. Pour
+                    les éteindre, vous les déplacez vers la case située sur la droite de l’écran.<br>
+
+                    <br><b>IMPORTANT : vous devez éteindre toutes les ampoules pour pouvoir passer à l’étape suivante.
+                        Vous êtes libre d’effectuer autant de périodes que vous le souhaitez.</b><br><br>
+
+                    Votre gain pour cette expérience est proportionnel au nombre de périodes effectivement validées
+                    pendant 60 minutes (chaque période rapportant 50 points). Vous avez donc 60 minutes pour réaliser
+                    autant de périodes que vous le souhaitez.<br>
+
+                    <br>
+                    {% if with_prime == 'WithPrime' %}
+                        Vous pouvez aussi obtenir une prime si le nombre de périodes validées atteint un certain seuil.
+                    {% endif %}
+                    {% if with_ecogeste == "WithEcoGeste" %}
+                        De plus, nous nous engageons à verser un montant égal à 5% de vos gains à une association étudiante
+                        de l’Université qui encourage les comportements environnementaux (association Eco-geste). Bien
+                        entendu, cette subvention n’est pas soustraite de vos gains, mais prélevée sur le budget de
+                        l’Anthropolab.<br><br>
+                    {% endif %}
+                    Votre gain est calculé de la manière suivante :<br>
+                    A chaque période, vous gagnez 50 points si vous éteignez 50 ampoules.
+
+                    {% if with_prime == 'WithPrime' %}
+                        Vous recevez également une prime au-delà de 20 périodes validées. La prime maximale, pour 35
+                        périodes validées et plus, est égale à 30% de vos gains. Quatre seuils sont utilisés pour le calcul
+                        de la prime. Un premier niveau de prime (égal à 25% de la prime maximale) est versé pour 20
+                        périodes validées, un second niveau (égal à 50% de la prime maximale) pour 25 périodes, un
+                        troisième (égal à 75% de la prime maximale) pour 30 périodes et enfin le dernier niveau
+                        (correspondant à la prime maximale) pour 35 périodes validées et plus.<br>
+                        <ul>
+                            <li>Si vous validez au maximum 19 périodes pendant l’expérience, vous n’êtes pas éligible à la prime.</li>
+                            <li>Si vous validez entre 20 périodes et 24 périodes, vous recevez un gain supplémentaire de 146 Points.</li>
+                            <li>Si vous validez entre 25 périodes et 29 périodes, Vous recevrez un gain supplémentaire de 292 Points.</li>
+                            <li>Si vous validez entre 30 périodes et 34 périodes. Vous recevrez un gain supplémentaire de 438 Points.</li>
+                            <li>Si vous validez au moins 35 périodes. Vous recevrez un gain supplémentaire de 580 Points.</li>
+                        </ul>
+                        <br>
+                    {% endif %}
+                    Vous repartez à la fin de
+                    l’expérience avec les gains cumulés de toutes les périodes validées.<br>
+                    <br>
+                    {% if with_ecogeste == "WithEcoGeste" %}
+                        Montant versé à l’association Eco-geste:<br>
+                        A chaque période, en plus de votre gain, vos efforts bénéficient à une association étudiante
+                        « Eco-geste ». Cette association s’occupe de promouvoir les actions pro-environnementales sur le
+                        campus par des campagnes de sensibilisation et d’information. L’association Eco-geste reçoit
+                        5% de la totalité votre gain. Le montant versé à Eco-geste n'est pas déduit de votre gain. <br><br>
+                    {% endif %}
+
+                    Chaque période se déroule de manière identique. Des exemples vont vous permettre de bien comprendre
+                    le calcul des gains.<br>
+                    <br>
+                    {% if with_prime == 'NoPrime' %}
+                        <b>Exemple 1 :</b><br>
+                        Supposons que vous validiez 195 périodes mais que lors de la 16ème, vous ne réalisiez que 15 tâches
+                        sur 50. Vous ne validez pas la 16ème période.<br>
+                        Votre gain est donc égal à : (15*50 points) = 750 points.<br>
+                        {% if with_ecogeste == "WithEcoGeste" %}
+                            Le montant versé à l’association est : 5% * 750 = 37.5 points.
+                        {% endif %}
+                        <br>
+                        <b>Exemple 2 :</b><br>
+                        Supposons que vous validez 45 périodes au cours de l’expérience.
+                        Votre gain est : (45*50 points) = 2250 points.<br>
+                        {% if with_ecogeste == "WithEcoGeste" %} <!--- ??? Attention Elithis: 5% pour Ecogeste! -->
+                            Le montant versé à l’association Eco-geste est : 2250 points.
+                        {% endif %}
+                        <br>
+                    {% elif with_prime == 'WithPrime' %}
+                        <b>Exemple 1 :</b><br>
+                        Supposons que vous validiez 19 périodes au cours de l’expérience. Vous ne bénéficiez pas de
+                        prime. Votre gain est calculé à partir du nombre de périodes validées.<br>
+                        Votre gain est donc égal à : (19 * 50 Points + 0 Points) = 950 Points.<br>
+                        {% if with_ecogeste == "WithEcoGeste" %}
+                            Le montant versé à l’association est : 5%*950=47,5 Points.<br>
+                        {% endif %}
+                        <br>
+                        <b>Exemple 2 :</b><br>
+                            Supposons que vous validiez 23 périodes au cours de l’expérience. Votre gain est égal au
+                            produit de 50 points par 23 périodes validées plus le premier niveau de prime.<br>
+                            Votre gain est : (23*50 Points + 146 Points) = 1296 Points.<br>
+                            Le montant versé à l’association Eco-geste est : 5% * 1296 Points = 64,8 Points.<br>
+                            <br>
+                            Supposons que vous validiez 27 périodes au cours de l’expérience. Vous touchez le second
+                            niveau de prime en plus du gain acquis par les périodes validées.<br>
+                            Votre gain est : (27*50 Points + 292 Points) = 1642 Points.<br>
+                            Le montant versé à l’association Eco-geste est : 5% * 1642 Points = 82,1 Points.<br>
+                            <br>
+                            Supposons que vous validiez 40 périodes au cours de l’expérience. Vous recevez le troisième
+                            seuil de la prime en plus du montant calculé à partir des périodes validées.<br>
+                            Votre gain est : (40*50 Points + 580 Points) = 2580 Points.<br>
+                            Le montant versé à l’association Eco-geste est : 5% * 2580 Points = 129 Points.<br>
+                            <br>
+                    {% endif %}
+                </p>
+                <br>
+                <p><b>L’écran « Récapitulatif » :</b></p>
+                <p>
+                    A la fin de chaque période, un écran « Récapitulatif » apparait sur votre écran. Cet écran vous
+                    informe de votre gain en points à cette période, du nombre de périodes que vous avez validées, de vos
+                    gains cumulés depuis le début de l’expérience, du montant de votre prime ainsi que du montant dont
+                    bénéficie Eco-geste grâce à vos efforts.<br>
+                    Une fois que vous avez validé le « Récapitulatif », un deuxième écran apparait.
+                    Vous avez alors deux possibilités : « Entamer la période suivante » ou «  Aller sur Internet ».<br>
+                    <ul>
+                        <li>Si vous cliquez sur le bouton « Entamer la période suivante », un autre écran avec 50
+                            ampoules allumées apparaît et vous pouvez continuer à éteindre les ampoules.</li>
+                        <li>Si vous cliquez sur le bouton « Aller sur Internet », une page web s’ouvre automatiquement.
+                            Vous pouvez alors aller sur le site de votre choix (pour consulter vos mails, aller sur
+                            Facebook ou sur vos sites habituels). Si vous optez pour cliquer sur le bouton
+                            « Allez sur Internet », vous ne pouvez plus accomplir de tâche, votre décision devient
+                            irréversible. Personne ne sait quelle option vous choisissez.</li>
+                    </ul>
+                </p>
+                <br>
+                <p><b>L’écran « Historique » :</b></p>
+                <p>
+                    A la fin du temps imparti pour l’expérience (60 minutes), vous voyez apparaître un écran
+                    « Historique ». Cet écran vous informe du nombre total de périodes que vous avez réalisées,
+                    de votre gain total en points accumulé pendant toute la durée de l’expérience ainsi que du montant
+                    total en points que vos efforts permettent à l’association Ecogeste de percevoir.
+                </p>
+                <br>
+                <p><b>Taux de conversion des points en euros :</b></p>
+                <p>
+                    Le taux de conversion des points en euros est le suivant : 1 ecu = 0.006 euros.
+                </p>
+                <br>
+                {% next_button %}
+            </div>
+        </div>
+    </div>
+{% endblock %}
